@@ -3,6 +3,16 @@
 import copy
 
 def convLine(s, m):
+    """
+    Converts a list of numbers into a formatted string with centered elements.
+    
+    Args:
+    s (int): The size of the matrix.
+    m (list): The list of numbers to be converted.
+    
+    Returns:
+    str: A formatted string with centered elements.
+    """
     convspam = ''
     for i in range(s-1):
         convspam += str(m[i]).center(len(str(s*s))) + ' '
@@ -10,6 +20,15 @@ def convLine(s, m):
     return convspam
 
 def newMt(mxs):
+    """
+    Creates a new matrix filled with zeros.
+    
+    Args:
+    mxs (int): The size of the matrix.
+    
+    Returns:
+    list: A 2D list (matrix) filled with zeros.
+    """
     spiralmx = []
     for x in range(mxs):
         spiralmx.append([])
@@ -18,6 +37,15 @@ def newMt(mxs):
     return spiralmx
 
 def spiralMx(mxs):
+    """
+    Generates a spiral matrix of given size.
+    
+    Args:
+    mxs (int): The size of the matrix.
+    
+    Returns:
+    list: A 2D list (matrix) filled with numbers in a spiral order.
+    """
     mx0 = newMt(mxs)
     spmt = copy.deepcopy(mx0)
     flag = 1
