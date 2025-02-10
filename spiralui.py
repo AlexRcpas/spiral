@@ -1,56 +1,67 @@
 #!python3
 
 import tkinter as tk
-from tkinter import messagebox
-import copy
+from tkinter import messagebox, font
+import spiralmx1  # Import the whole module
 
-def convLine(s, m):
-    convspam = ''
-    for i in range(s-1):
-        convspam += str(m[i]).center(len(str(s*s))) + ' '
-    convspam += str(m[-1]).center(len(str(s*s)))
-    return convspam
+def calculate_text_size(mxs):
+    """
+    Calculate the appropriate text widget size based on matrix size.
+    
+    Args:
+    mxs (int): Matrix size
+    
+    Returns:
+    tuple: (width, height) in characters
+    """
+    # Calculate width based on the largest number (mxs*mxs) and spacing
+    cell_width = len(str(mxs*mxs))
+    total_width = (cell_width + 1) * mxs  # +1 for spacing
+    # Height is matrix size plus some padding
+    return (total_width + 2, mxs + 2)
 
-def newMt(mxs):
-    spiralmx = []
-    for x in range(mxs):
-        spiralmx.append([])
-        for y in range(mxs):
-            spiralmx[x].append(0)
-    return spiralmx
-
-def spiralMx(mxs):
-    mx0 = newMt(mxs)
-    spmt = copy.deepcopy(mx0)
-    flag = 1
-    t = 0
-    while flag <= mxs * mxs:
-        for cl in range(t, mxs-t):
-            spmt[t][cl] = flag
-            flag += 1
-        for rw in range(t+1, mxs-t):
-            spmt[rw][mxs-1-t] = flag
-            flag += 1
-        for cl in range(mxs-2-t, t-1, -1):
-            spmt[mxs-1-t][cl] = flag
-            flag += 1
-        for rw in range(mxs-2-t, t, -1):
-            spmt[rw][t] = flag
-            flag += 1
-        t += 1
-    return spmt
+def adjust_font_size(text_widget, mxs):
+    """
+    Adjust font size based on matrix size for better visibility.
+    
+    Args:
+    text_widget: Tkinter Text widget
+    mxs (int): Matrix size
+    """
+    base_size = 14
+    if mxs > 10:
+        base_size = max(8, int(base_size - (mxs-10)/2))
+    custom_font = font.Font(family="Courier", size=base_size)
+    text_widget.configure(font=custom_font)
 
 def generate_matrix():
+    """
+    Generates the spiral matrix based on user input and displays it in the text widget.
+    """
     try:
         mxs = int(entry.get())
         if mxs <= 0:
             messagebox.showerror("Error", "Please enter a positive integer.")
             return
-        spmx = spiralMx(mxs)
+            
+        # Calculate new dimensions
+        width, height = calculate_text_size(mxs)
+        
+        # Reconfigure text widget
+        result_text.configure(width=width, height=height)
+        adjust_font_size(result_text, mxs)
+        
+        # Generate and display matrix using the module name
+        spmx = spiralmx1.spiralMx(mxs)
         result_text.delete(1.0, tk.END)
         for i in range(mxs):
-            cvdmx = convLine(mxs, spmx[i])
+            cvdmx = spiralmx1.convLine(mxs, spmx[i])
             result_text.insert(tk.END, cvdmx + '\n')
+            
+        # Center the matrix content
+        result_text.tag_configure("center", justify='center')
+        result_text.tag_add("center", "1.0", "end")
+        
     except ValueError:
         messagebox.showerror("Error", "Please enter a valid integer.")
 
@@ -58,16 +69,25 @@ def generate_matrix():
 root = tk.Tk()
 root.title("Spiral Matrix Generator")
 
+# Configure main window
+root.resizable(True, True)
+root.minsize(300, 200)
+
+# Create main frame with padding
+main_frame = tk.Frame(root, padx=10, pady=10)
+main_frame.pack(expand=True, fill='both')
+
 # Create and place the widgets
-tk.Label(root, text="Enter the size of the matrix:").pack(pady=10)
-entry = tk.Entry(root)
+tk.Label(main_frame, text="Enter the size of the matrix:").pack(pady=5)
+entry = tk.Entry(main_frame, width=10)
 entry.pack(pady=5)
 
-generate_button = tk.Button(root, text="Generate Matrix", command=generate_matrix)
-generate_button.pack(pady=10)
+generate_button = tk.Button(main_frame, text="Generate Matrix", command=generate_matrix)
+generate_button.pack(pady=5)
 
-result_text = tk.Text(root, height=20, width=50)
-result_text.pack(pady=10)
+# Create text widget with initial size
+result_text = tk.Text(main_frame, width=20, height=10, font=("Courier", 12))
+result_text.pack(expand=True, fill='both', pady=5)
 
 # Start the main event loop
 root.mainloop()

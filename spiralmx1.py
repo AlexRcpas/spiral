@@ -2,6 +2,7 @@
 
 import copy
 
+
 def convLine(s, m):
     """
     Converts a list of numbers into a formatted string with centered elements.
@@ -35,16 +36,11 @@ def newMt(mxs):
         for y in range(mxs):
             spiralmx[x].append(0)
     return spiralmx
+ 
 
 def spiralMx(mxs):
     """
     Generates a spiral matrix of given size.
-    
-    Args:
-    mxs (int): The size of the matrix.
-    
-    Returns:
-    list: A 2D list (matrix) filled with numbers in a spiral order.
     """
     mx0 = newMt(mxs)
     spmt = copy.deepcopy(mx0)
@@ -66,15 +62,16 @@ def spiralMx(mxs):
         t += 1
     return spmt
 
-while True:
-    print("Tell me the size of the matrix:")
-    mxs = int(input())
-    if mxs == 0:
-        break
-    else:
-        spmx = spiralMx(mxs)
-
-        for i in range(mxs):
-            cvdmx = convLine(mxs, spmx[i])
-            print(cvdmx)
-        print("\nYou can break out by enter the number '0'.")
+if __name__ == '__main__':
+    # Command line interaction only runs when executing this file directly
+    while True:
+        print("Tell me the size of the matrix:")
+        mxs = int(input())
+        if mxs == 0:
+            break
+        else:
+            spmx = spiralMx(mxs)
+            for i in range(mxs):
+                cvdmx = convLine(mxs, spmx[i])
+                print(cvdmx)
+            print("\nYou can break out by entering '0'.")
