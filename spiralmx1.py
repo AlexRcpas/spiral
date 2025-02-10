@@ -7,7 +7,7 @@ def convLine(s, m):
     Converts a list of numbers into a formatted string with centered elements.
     
     Args:
-    s (int): The size of the matrix.
+    s (int): The size of the matrix.test
     m (list): The list of numbers to be converted.
     
     Returns:
