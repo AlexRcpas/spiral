@@ -65,6 +65,12 @@ def generate_matrix():
     except ValueError:
         messagebox.showerror("Error", "Please enter a valid integer.")
 
+def on_enter(event):
+    generate_matrix()
+
+def exit_program():
+    root.destroy()
+
 # Create the main window
 root = tk.Tk()
 root.title("Spiral Matrix Generator")
@@ -81,9 +87,13 @@ main_frame.pack(expand=True, fill='both')
 tk.Label(main_frame, text="Enter the size of the matrix:").pack(pady=5)
 entry = tk.Entry(main_frame, width=10)
 entry.pack(pady=5)
+entry.bind("<Return>", on_enter)
 
 generate_button = tk.Button(main_frame, text="Generate Matrix", command=generate_matrix)
 generate_button.pack(pady=5)
+
+exit_button = tk.Button(main_frame, text="Exit", command=exit_program)
+exit_button.pack(pady=5)
 
 # Create text widget with initial size
 result_text = tk.Text(main_frame, width=20, height=10, font=("Courier", 12))
